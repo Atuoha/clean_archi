@@ -9,7 +9,7 @@ class GetRandomNumberTrivia {
 
   const GetRandomNumberTrivia({required this.numberTriviaRepository});
 
-  Future<Either<Failure, NumberTrivia>> execute() async {
+  Future<Either<Failure, NumberTrivia>> call() async {
     return await numberTriviaRepository.getRandomNumberTrivia();
   }
 }

@@ -28,7 +28,7 @@ void main() {
       (_) async => Right<Failure, NumberTrivia>(numberTrivia),
     );
 
-    final result = await useCase.execute(number: number);
+    final result = await useCase(number: number);
 
     expect(result, Right(numberTrivia));
     verify(() => mockNumberTriviaRepository.getConcreteNumberTrivia(number));

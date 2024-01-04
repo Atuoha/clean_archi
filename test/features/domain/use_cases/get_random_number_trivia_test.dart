@@ -24,7 +24,7 @@ void main() {
       (invocation) async => Right(numberTrivia),
     );
 
-    final result = await useCase.execute();
+    final result = await useCase();
     expect(result, Right(numberTrivia));
     verify(() => mockGetRandomNumberTrivia.getRandomNumberTrivia());
     verifyNoMoreInteractions(mockGetRandomNumberTrivia);
