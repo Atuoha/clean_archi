@@ -19,7 +19,8 @@ void main() {
   setUp(() => {
         mockNumberTriviaRepository = MockNumberTriviaRepository(),
         useCase = GetConcreteNumberTrivia(
-            numberTriviaRepository: mockNumberTriviaRepository),
+          numberTriviaRepository: mockNumberTriviaRepository,
+        ),
       });
 
   test('Test for get concrete number trivia', () async {
@@ -28,7 +29,7 @@ void main() {
       (_) async => Right<Failure, NumberTrivia>(numberTrivia),
     );
 
-    final result = await useCase(number: number);
+    final result = await useCase(Params(number: number));
 
     expect(result, Right(numberTrivia));
     verify(() => mockNumberTriviaRepository.getConcreteNumberTrivia(number));
