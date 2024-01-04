@@ -2,15 +2,17 @@ import 'package:clean_archi/features/num_trivia/domain/entities/number_trivia.da
 import 'package:clean_archi/features/num_trivia/domain/repositories/number_trivia_repository.dart';
 import 'package:clean_archi/features/num_trivia/domain/use_cases/get_concrete_number_trivia.dart';
 import 'package:clean_archi/main.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:clean_archi/core/error/failure.dart';
 
 class MockNumberTriviaRepository extends Mock
     implements NumberTriviaRepository {}
 
 void main() {
-  GetConcreteNumberTrivia usecase;
-  MockNumberTriviaRepository mockNumberTriviaRepository;
+  late GetConcreteNumberTrivia usecase;
+  late MockNumberTriviaRepository mockNumberTriviaRepository;
   int number = 1;
   NumberTrivia numberTrivia = NumberTrivia.initial();
 
@@ -21,6 +23,15 @@ void main() {
       });
 
   test('Test for get concrete number trivia', () async {
+    when(() => mockNumberTriviaRepository.getConcreteNumberTrivia(number))
+        .thenAnswer(
+      (_) async => Right<Failure, NumberTrivia>(numberTrivia),
+    );
 
+    final result = await usecase.execute(number: number);
+
+    expect(result, Right(numberTrivia));
+    verify(() => mockNumberTriviaRepository.getConcreteNumberTrivia(number));
+    verifyNoMoreInteractions(mockNumberTriviaRepository);
   });
 }
