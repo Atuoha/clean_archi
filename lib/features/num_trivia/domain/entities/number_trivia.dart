@@ -20,21 +20,8 @@ class NumberTrivia extends Equatable {
   @override
   List<Object> get props => [text, number, found];
 
-  Map<String, dynamic> toJson() {
-    return {
-      'text': text,
-      'number': number,
-      'found': found,
-    };
-  }
 
-  factory NumberTrivia.fromJson(Map<String, dynamic> json) {
-    return NumberTrivia(
-      text: json['text'] as String,
-      number: json['number'] as int,
-      found: json['found'] as bool,
-    );
-  }
+
 
   NumberTrivia copyWith({
     String? text,

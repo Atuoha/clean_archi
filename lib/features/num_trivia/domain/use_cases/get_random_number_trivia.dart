@@ -18,7 +18,3 @@ class GetRandomNumberTrivia implements UseCase<NumberTrivia, NoParams> {
 }
 
 
-class NoParams extends Equatable{
-  @override
-  List<Object?> get props => [];
-}
