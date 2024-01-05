@@ -7,10 +7,10 @@ class NumberTriviaModel extends NumberTrivia {
     required String text,
     required int number,
     required bool found,
-  }) : super(text: '', number: 0, found: false);
+  }) : super(text: text, number: number, found: found);
 
   factory NumberTriviaModel.initial() =>
-      const NumberTriviaModel(text: '', number: 0, found: false);
+      const NumberTriviaModel(text: 'Lorem', number: 1, found: false);
 
   Map<String, dynamic> toJson() {
     return {

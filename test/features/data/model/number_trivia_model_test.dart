@@ -37,8 +37,14 @@ void main() {
   group('toJson', () {
     test('should return a map contain containing the proper data', () {
       final result = numberTriviaModel.toJson();
+      final Map<String, dynamic> expectedMap = {
+        "text": "Lorem",
+        "number": 1,
+        "found": false
+      };
 
-      expect(result, isA<Map<String,dynamic>>());
+      expect(result, isA<Map<String, dynamic>>());
+      expect(result, expectedMap);
     });
   });
 }

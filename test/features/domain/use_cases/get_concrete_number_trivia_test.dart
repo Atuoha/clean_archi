@@ -2,7 +2,6 @@ import 'package:clean_archi/core/use_cases/use_cases.dart';
 import 'package:clean_archi/features/num_trivia/domain/entities/number_trivia.dart';
 import 'package:clean_archi/features/num_trivia/domain/repositories/number_trivia_repository.dart';
 import 'package:clean_archi/features/num_trivia/domain/use_cases/get_concrete_number_trivia.dart';
-import 'package:clean_archi/main.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

@@ -12,16 +12,13 @@ class NumberTrivia extends Equatable {
   });
 
   factory NumberTrivia.initial() => const NumberTrivia(
-        text: '',
-        number: 0,
+        text: 'Lorem',
+        number: 1,
         found: false,
       );
 
   @override
   List<Object> get props => [text, number, found];
-
-
-
 
   NumberTrivia copyWith({
     String? text,
