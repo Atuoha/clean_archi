@@ -1,3 +1,4 @@
+import 'package:clean_archi/core/error/exceptions.dart';
 import 'package:clean_archi/core/platform/network_info.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_local_data_source.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_remote_data_source.dart';
@@ -60,10 +61,54 @@ void main() {
 
         final result =
             await numberTriviaRepositoryImpl.getConcreteNumberTrivia(number);
-        verify(() =>
-            mockNumberTriviaRemoteDataSource.getConcreteNumberTrivia(number));
+        verify(
+          () =>
+              mockNumberTriviaRemoteDataSource.getConcreteNumberTrivia(number),
+        );
 
         expect(result, Right(numberTrivia));
+      });
+
+      test(
+          'should cache data locally when request from remote data source is successful',
+          () async {
+        when(() => mockNumberTriviaRemoteDataSource
+            .getConcreteNumberTrivia(number)).thenAnswer(
+          (_) async => numberTriviaModel,
+        );
+
+        await numberTriviaRepositoryImpl.getConcreteNumberTrivia(number);
+
+        verifyInOrder([
+          () =>
+              mockNumberTriviaRemoteDataSource.getConcreteNumberTrivia(number),
+          () => mockNumberTriviaLocalDataSource
+              .cacheNumberTrivia(numberTriviaModel),
+        ]);
+      });
+
+      test(
+          'should return server error when request from remote data source is unsuccessful',
+          () async {
+        when(() => mockNumberTriviaRemoteDataSource
+            .getConcreteNumberTrivia(number)).thenThrow(
+          const ServerException(message: 'An error occurred'),
+        );
+
+        final result =
+            await numberTriviaRepositoryImpl.getConcreteNumberTrivia(number);
+
+        verify(() =>
+            mockNumberTriviaRemoteDataSource.getConcreteNumberTrivia(number));
+        verifyZeroInteractions(mockNumberTriviaLocalDataSource.cacheNumberTrivia(numberTriviaModel));
+        expect(
+          result,
+          equals(
+            const Left(
+              ServerException(message: 'An error occurred'),
+            ),
+          ),
+        );
       });
     });
 

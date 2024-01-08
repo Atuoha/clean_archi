@@ -6,6 +6,7 @@ import 'package:clean_archi/features/num_trivia/domain/repositories/number_trivi
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/platform/network_info.dart';
+import '../models/number_trivia_model.dart';
 
 class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   final NetworkInfo networkInfo;
@@ -20,11 +21,14 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
 
   @override
   Future<Either<Failure, NumberTrivia>> getConcreteNumberTrivia(
-      int number) async {
-    networkInfo.isConnected;
-    return Right(
-      await numberTriviaRemoteDataSource.getConcreteNumberTrivia(number),
-    );
+    int number,
+  ) async {
+    await networkInfo.isConnected;
+    final remoteTrivia =
+        await numberTriviaRemoteDataSource.getConcreteNumberTrivia(number);
+
+    numberTriviaLocalDataSource.cacheNumberTrivia(remoteTrivia);
+    return Right(remoteTrivia);
   }
 
   @override
