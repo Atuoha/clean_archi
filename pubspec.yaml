@@ -40,10 +40,11 @@ dependencies:
   equatable: ^2.0.5
   dartz: ^0.10.1
   dio: ^5.4.0
-  connectivity: ^3.0.6
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.4
   mocktail: ^1.0.2
+  internet_connection_checker: ^1.0.0+1
+  connectivity_plus: ^5.0.2
 
 dev_dependencies:
   flutter_test:
