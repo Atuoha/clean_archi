@@ -118,11 +118,26 @@ void main() {
         );
 
         final result =
-            await mockNumberTriviaLocalDataSource.getNumberTriviaLocalData;
+            await numberTriviaRepositoryImpl.getConcreteNumberTrivia(number);
 
+        verifyZeroInteractions(mockNumberTriviaRemoteDataSource);
         verify(() => mockNumberTriviaLocalDataSource.getNumberTriviaLocalData);
-        expect(result, numberTriviaModel);
+        expect(result, equals(Right(numberTrivia)));
       });
+
+      test('should return cache failure when there is no data cached locally',
+          () async {
+        when(() => mockNumberTriviaLocalDataSource.getNumberTriviaLocalData)
+            .thenThrow(const CacheException());
+
+        final result =
+            await numberTriviaRepositoryImpl.getConcreteNumberTrivia(number);
+
+        verifyZeroInteractions(mockNumberTriviaRemoteDataSource);
+        verify(() => mockNumberTriviaLocalDataSource.getNumberTriviaLocalData);
+        expect(result, equals(Left(CacheFailure())));
+      });
+
     });
   });
 }
