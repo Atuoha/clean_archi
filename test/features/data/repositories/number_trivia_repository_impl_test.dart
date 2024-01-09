@@ -1,4 +1,5 @@
 import 'package:clean_archi/core/error/exceptions.dart';
+import 'package:clean_archi/core/error/failure.dart';
 import 'package:clean_archi/core/platform/network_info.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_local_data_source.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_remote_data_source.dart';
@@ -92,7 +93,7 @@ void main() {
           () async {
         when(() => mockNumberTriviaRemoteDataSource
             .getConcreteNumberTrivia(number)).thenThrow(
-          const ServerException(message: 'An error occurred'),
+          const ServerException(),
         );
 
         final result =
@@ -100,38 +101,28 @@ void main() {
 
         verify(() =>
             mockNumberTriviaRemoteDataSource.getConcreteNumberTrivia(number));
-        verifyZeroInteractions(mockNumberTriviaLocalDataSource.cacheNumberTrivia(numberTriviaModel));
-        expect(
-          result,
-          equals(
-            const Left(
-              ServerException(message: 'An error occurred'),
-            ),
-          ),
-        );
+        verifyZeroInteractions(mockNumberTriviaLocalDataSource);
+        expect(result, equals(Left(ServerFailure())));
       });
     });
 
-    // group('device is offline', () {
-    //   setUp(() {
-    //     when(() => mockNetworkInfo.isConnected.then((_) async => false));
-    //   });
-    //
-    //   test('number trivia should be returned from local data source', () async {
-    //     when(() => mockNumberTriviaLocalDataSource.getNumberTriviaLocalData)
-    //         .thenAnswer(
-    //       (invocation) async => numberTriviaModel,
-    //     );
-    //
-    //     final result =
-    //         await mockNumberTriviaLocalDataSource.getNumberTriviaLocalData;
-    //
-    //     verify(() => mockNumberTriviaLocalDataSource.getNumberTriviaLocalData);
-    //     verifyNoMoreInteractions(
-    //       numberTriviaRepositoryImpl.getConcreteNumberTrivia(number),
-    //     );
-    //     expect(result, numberTriviaModel);
-    //   });
-    // });
+    group('device is offline', () {
+      setUp(() {
+        when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+      });
+
+      test('number trivia should be returned from local data source', () async {
+        when(() => mockNumberTriviaLocalDataSource.getNumberTriviaLocalData)
+            .thenAnswer(
+          (_) async => numberTriviaModel,
+        );
+
+        final result =
+            await mockNumberTriviaLocalDataSource.getNumberTriviaLocalData;
+
+        verify(() => mockNumberTriviaLocalDataSource.getNumberTriviaLocalData);
+        expect(result, numberTriviaModel);
+      });
+    });
   });
 }

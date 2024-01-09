@@ -1,3 +1,4 @@
+import 'package:clean_archi/core/error/exceptions.dart';
 import 'package:clean_archi/core/error/failure.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_local_data_source.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_remote_data_source.dart';
@@ -23,12 +24,15 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   Future<Either<Failure, NumberTrivia>> getConcreteNumberTrivia(
     int number,
   ) async {
-    await networkInfo.isConnected;
-    final remoteTrivia =
-        await numberTriviaRemoteDataSource.getConcreteNumberTrivia(number);
-
-    numberTriviaLocalDataSource.cacheNumberTrivia(remoteTrivia);
-    return Right(remoteTrivia);
+    networkInfo.isConnected;
+    try {
+      final remoteTrivia =
+          await numberTriviaRemoteDataSource.getConcreteNumberTrivia(number);
+      numberTriviaLocalDataSource.cacheNumberTrivia(remoteTrivia);
+      return Right(remoteTrivia);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 
   @override
