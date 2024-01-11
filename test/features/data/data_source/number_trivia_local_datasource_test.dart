@@ -55,7 +55,7 @@ void main() {
     when(
       () => mockSharedPreference.setString(
         CACHED_NUMBER_TRIVIA,
-        numberTriviaModel.toJson().toString(),
+        jsonEncode(numberTriviaModel.toJson()),
       ),
     ).thenAnswer(
       (_) async => true,
@@ -65,7 +65,7 @@ void main() {
     verify(
       () => mockSharedPreference.setString(
         CACHED_NUMBER_TRIVIA,
-        numberTriviaModel.toJson().toString(),
+        jsonEncode(numberTriviaModel.toJson()),
       ),
     );
   });

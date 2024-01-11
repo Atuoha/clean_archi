@@ -21,9 +21,7 @@ class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
   @override
   Future<void> cacheNumberTrivia(NumberTriviaModel numberTriviaModel) async {
     await sharedPreferences.setString(
-      CACHED_NUMBER_TRIVIA,
-      numberTriviaModel.toJson().toString(),
-    );
+        CACHED_NUMBER_TRIVIA, jsonEncode(numberTriviaModel.toJson()));
   }
 
   @override
@@ -32,7 +30,7 @@ class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
     if (jsonString != null) {
       return Future.value(
         NumberTriviaModel.fromJson(
-          jsonDecode(jsonString!),
+          jsonDecode(jsonString),
         ),
       );
     }
