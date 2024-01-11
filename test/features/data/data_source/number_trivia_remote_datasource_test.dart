@@ -27,21 +27,57 @@ void main() {
         NumberTriviaRemoteDataSourceImpl(client: mockClient);
   });
 
+  // test when status code is 200 for concrete number trivia
+  void runWhenSuccessfulConcreteTrivia() {
+    when(
+      () => mockClient.get(
+        Uri.parse('$URL/$number'),
+        headers: headers,
+      ),
+    ).thenAnswer(
+      (_) async => http.Response(triviaFixture, 200),
+    );
+  }
+
+  // test when status code is not 200 for concrete number trivia
+  void runWhenNotSuccessfulConcreteTrivia() {
+    when(() => mockClient.get(
+          Uri.parse('$URL/$number'),
+          headers: headers,
+        )).thenAnswer(
+      (_) async => http.Response('Something went wrong!', 404),
+    );
+  }
+
+  // test when status code is 200 for random number trivia
+  void runWhenSuccessfulRandomTrivia() {
+    when(
+      () => mockClient.get(
+        Uri.parse('$URL/random'),
+        headers: headers,
+      ),
+    ).thenAnswer(
+      (_) async => http.Response(triviaFixture, 200),
+    );
+  }
+
+  // test when status code is not 200 for random number trivia
+  void runWhenNotSuccessfulRandomTrivia() {
+    when(() => mockClient.get(
+          Uri.parse('$URL/random'),
+          headers: headers,
+        )).thenAnswer(
+      (_) async => http.Response('Something went wrong!', 404),
+    );
+  }
+
   // CONCRETE ----------------
   group('getConcreteNumberTrivia', () {
     test(
         'should check if a GET request is successful '
         'when called using number endpoint and application/json content-type ',
         () async {
-      when(
-        () => mockClient.get(
-          Uri.parse('$URL/$number'),
-          headers: headers,
-        ),
-      ).thenAnswer(
-        (_) async => http.Response(triviaFixture, 200),
-      );
-
+      runWhenSuccessfulConcreteTrivia();
       numberTriviaRemoteDataSourceImpl.getConcreteNumberTrivia(number);
       verify(
         () => mockClient.get(
@@ -54,15 +90,7 @@ void main() {
     test(
         'should return a concrete NumberTrivia when getConcreteNumberTrivia is called and status code is 200',
         () async {
-      when(
-        () => mockClient.get(
-          Uri.parse('$URL/$number'),
-          headers: headers,
-        ),
-      ).thenAnswer(
-        (_) async => http.Response(triviaFixture, 200),
-      );
-
+      runWhenSuccessfulConcreteTrivia();
       final result = await numberTriviaRemoteDataSourceImpl
           .getConcreteNumberTrivia(number);
       verify(
@@ -77,15 +105,10 @@ void main() {
     test(
         'should return ServerException when getConcreteNumberTrivia '
         'is called and there is an error', () async {
-      when(() => mockClient.get(
-            Uri.parse('$URL/$number'),
-            headers: headers,
-          )).thenAnswer(
-        (_) async => http.Response('Something went wrong!', 404),
-      );
-
+      runWhenNotSuccessfulConcreteTrivia();
       expect(
-        ()  async => numberTriviaRemoteDataSourceImpl.getConcreteNumberTrivia(number),
+        () async =>
+            numberTriviaRemoteDataSourceImpl.getConcreteNumberTrivia(number),
         throwsA(const TypeMatcher<ServerException>()),
       );
     });
@@ -96,13 +119,7 @@ void main() {
     test(
         'should return a random NumberTrivia when getRandomNumberTrivia is called and status code is 200',
         () async {
-      when(() => mockClient.get(
-            Uri.parse('$URL/random'),
-            headers: headers,
-          )).thenAnswer(
-        (_) async => http.Response(triviaFixture, 200),
-      );
-
+      runWhenSuccessfulRandomTrivia();
       final result =
           await numberTriviaRemoteDataSourceImpl.getRandomNumberTrivia();
       verify(
@@ -113,21 +130,16 @@ void main() {
       );
       expect(result, equals(numberTriviaModel));
     });
+  });
 
-    test(
-        'should return ServerException when getRandomNumberTrivia '
-        'is called and there is an error', () async {
-      when(() => mockClient.get(
-            Uri.parse('$URL/random'),
-            headers: headers,
-          )).thenAnswer(
-        (_) async => http.Response('Something went wrong!', 404),
-      );
+  test(
+      'should return ServerException when getRandomNumberTrivia '
+      'is called and there is an error', () async {
+    runWhenNotSuccessfulRandomTrivia();
 
-      expect(
-        () async => numberTriviaRemoteDataSourceImpl.getRandomNumberTrivia(),
-        throwsA(const TypeMatcher<ServerException>()),
-      );
-    });
+    expect(
+      () async => numberTriviaRemoteDataSourceImpl.getRandomNumberTrivia(),
+      throwsA(const TypeMatcher<ServerException>()),
+    );
   });
 }
