@@ -28,7 +28,7 @@ void main() {
   });
 
   // test when status code is 200 for concrete number trivia
-  void runWhenSuccessfulConcreteTrivia() {
+  void setUpMockHttpClientSuccessConcreteTrivia() {
     when(
       () => mockClient.get(
         Uri.parse('$URL/$number'),
@@ -40,7 +40,7 @@ void main() {
   }
 
   // test when status code is not 200 for concrete number trivia
-  void runWhenNotSuccessfulConcreteTrivia() {
+  void setUpMockHttpClientFailureConcreteTrivia() {
     when(() => mockClient.get(
           Uri.parse('$URL/$number'),
           headers: headers,
@@ -50,7 +50,7 @@ void main() {
   }
 
   // test when status code is 200 for random number trivia
-  void runWhenSuccessfulRandomTrivia() {
+  void setUpMockHttpClientSuccessRandomTrivia() {
     when(
       () => mockClient.get(
         Uri.parse('$URL/random'),
@@ -62,7 +62,7 @@ void main() {
   }
 
   // test when status code is not 200 for random number trivia
-  void runWhenNotSuccessfulRandomTrivia() {
+  void setUpMockHttpClientFailureRandomTrivia() {
     when(() => mockClient.get(
           Uri.parse('$URL/random'),
           headers: headers,
@@ -77,7 +77,7 @@ void main() {
         'should check if a GET request is successful '
         'when called using number endpoint and application/json content-type ',
         () async {
-      runWhenSuccessfulConcreteTrivia();
+      setUpMockHttpClientSuccessConcreteTrivia();
       numberTriviaRemoteDataSourceImpl.getConcreteNumberTrivia(number);
       verify(
         () => mockClient.get(
@@ -90,7 +90,7 @@ void main() {
     test(
         'should return a concrete NumberTrivia when getConcreteNumberTrivia is called and status code is 200',
         () async {
-      runWhenSuccessfulConcreteTrivia();
+      setUpMockHttpClientSuccessConcreteTrivia();
       final result = await numberTriviaRemoteDataSourceImpl
           .getConcreteNumberTrivia(number);
       verify(
@@ -105,7 +105,7 @@ void main() {
     test(
         'should return ServerException when getConcreteNumberTrivia '
         'is called and there is an error', () async {
-      runWhenNotSuccessfulConcreteTrivia();
+      setUpMockHttpClientFailureConcreteTrivia();
       expect(
         () async =>
             numberTriviaRemoteDataSourceImpl.getConcreteNumberTrivia(number),
@@ -119,7 +119,7 @@ void main() {
     test(
         'should return a random NumberTrivia when getRandomNumberTrivia is called and status code is 200',
         () async {
-      runWhenSuccessfulRandomTrivia();
+      setUpMockHttpClientSuccessRandomTrivia();
       final result =
           await numberTriviaRemoteDataSourceImpl.getRandomNumberTrivia();
       verify(
@@ -135,7 +135,7 @@ void main() {
   test(
       'should return ServerException when getRandomNumberTrivia '
       'is called and there is an error', () async {
-    runWhenNotSuccessfulRandomTrivia();
+    setUpMockHttpClientFailureRandomTrivia();
 
     expect(
       () async => numberTriviaRemoteDataSourceImpl.getRandomNumberTrivia(),

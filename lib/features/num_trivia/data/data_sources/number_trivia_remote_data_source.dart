@@ -17,9 +17,6 @@ abstract class NumberTriviaRemoteDataSource {
 const URL = 'http://numbersapi.com';
 const headers = {'Content-Type': 'application/json'};
 
-// get number trivia type
-enum GetNumberTriviaType { concrete, random }
-
 class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   final httpUtil.Client client;
 
@@ -29,8 +26,7 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   Future<NumberTriviaModel> getConcreteNumberTrivia(int number) async {
     print('concrete called');
     return await getNumberTrivia(
-      number: number,
-      getNumberTriviaType: GetNumberTriviaType.concrete,
+      url: '$URL/$number',
     );
   }
 
@@ -38,19 +34,14 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   Future<NumberTriviaModel> getRandomNumberTrivia() async {
     print('random called');
     return await getNumberTrivia(
-      getNumberTriviaType: GetNumberTriviaType.random,
+      url: '$URL/random',
     );
   }
 
   // get number trivia fnc for both random and concrete
-  Future<NumberTriviaModel> getNumberTrivia({
-    int number = 0,
-    required GetNumberTriviaType getNumberTriviaType,
-  }) async {
+  Future<NumberTriviaModel> getNumberTrivia({required String url}) async {
     final response = await client.get(
-      Uri.parse(
-        '$URL/${getNumberTriviaType == GetNumberTriviaType.random ? 'random' : number}',
-      ),
+      Uri.parse(url),
       headers: headers,
     );
     if (response.statusCode == 200) {
@@ -61,9 +52,7 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
       // PRINTING
       if (kDebugMode) {
         print(
-          getNumberTriviaType == GetNumberTriviaType.random
-              ? 'RANDOM: text- ${numberTriviaModel.text}, number: ${numberTriviaModel.number}'
-              : 'CONCRETE: text- ${numberTriviaModel.text}, number: ${numberTriviaModel.number}',
+          'DATA: text- ${numberTriviaModel.text}, number: ${numberTriviaModel.number}',
         );
       }
       return numberTriviaModel;
