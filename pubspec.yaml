@@ -103,3 +103,24 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  assets:
+    - lib/
+    - lib/core/
+    - lib/core/error/
+    - lib/core/platform/
+    - lib/core/use_cases/
+    - lib/features/
+    - lib/features/num_trivia/
+    - lib/features/num_trivia/data/
+    - lib/features/num_trivia/data/models/
+    - lib/features/num_trivia/data/data_sources/
+    - lib/features/num_trivia/data/repositories/
+    - lib/features/num_trivia/domain/
+    - lib/features/num_trivia/domain/entities/
+    - lib/features/num_trivia/domain/use_cases/
+    - lib/features/num_trivia/domain/repositories/
+    - lib/features/num_trivia/presentation/
+    - lib/features/num_trivia/presentation/bloc/
+    - lib/features/num_trivia/presentation/pages/
+    - lib/features/num_trivia/presentation/widgets/
+

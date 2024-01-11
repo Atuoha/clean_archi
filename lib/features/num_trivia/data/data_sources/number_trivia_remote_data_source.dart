@@ -23,23 +23,19 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   NumberTriviaRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<NumberTriviaModel> getConcreteNumberTrivia(int number) async {
-    print('concrete called');
-    return await getNumberTrivia(
-      url: '$URL/$number',
-    );
-  }
+  Future<NumberTriviaModel> getConcreteNumberTrivia(int number) =>
+      _getNumberTrivia(
+        url: '$URL/$number',
+      );
 
   @override
-  Future<NumberTriviaModel> getRandomNumberTrivia() async {
-    print('random called');
-    return await getNumberTrivia(
-      url: '$URL/random',
-    );
-  }
+  Future<NumberTriviaModel> getRandomNumberTrivia() =>
+      _getNumberTrivia(url: '$URL/random');
+
+
 
   // get number trivia fnc for both random and concrete
-  Future<NumberTriviaModel> getNumberTrivia({required String url}) async {
+  Future<NumberTriviaModel> _getNumberTrivia({required String url}) async {
     final response = await client.get(
       Uri.parse(url),
       headers: headers,
