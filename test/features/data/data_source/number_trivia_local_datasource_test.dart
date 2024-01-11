@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clean_archi/core/error/exceptions.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_local_data_source.dart';
 import 'package:clean_archi/features/num_trivia/data/models/number_trivia_model.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,8 +15,9 @@ void main() {
   late MockSharedPreference mockSharedPreference;
   late NumberTriviaLocalDataSourceImpl numberTriviaLocalDataSourceImpl;
   final String triviaFixture = fixture('trivia.json');
-  final NumberTriviaModel numberTriviaModel =
+  final NumberTriviaModel numberTriviaJson =
       NumberTriviaModel.fromJson(jsonDecode(triviaFixture));
+  final NumberTriviaModel numberTriviaModel = NumberTriviaModel.initial();
 
   setUp(() {
     mockSharedPreference = MockSharedPreference();
@@ -24,7 +26,7 @@ void main() {
     );
   });
 
-  test('should return Number Trivia when getNumberTriviaLocalData is called',
+  test('should return NumberTrivia when getNumberTriviaLocalData is called',
       () async {
     when(() => mockSharedPreference.getString(CACHED_NUMBER_TRIVIA)).thenAnswer(
       (_) => triviaFixture,
@@ -33,6 +35,38 @@ void main() {
     final result =
         await numberTriviaLocalDataSourceImpl.getNumberTriviaLocalData;
     verify(() => mockSharedPreference.getString(CACHED_NUMBER_TRIVIA));
-    expect(result, equals(numberTriviaModel));
+    expect(result, equals(numberTriviaJson));
+  });
+
+  test(
+      'should throw a CacheException when there is no cache '
+      'NumberTrivia when getNumberTriviaLocalData is called', () async {
+    when(() => mockSharedPreference.getString(CACHED_NUMBER_TRIVIA))
+        .thenReturn(null);
+    expect(
+      () async => numberTriviaLocalDataSourceImpl.getNumberTriviaLocalData,
+      throwsA(
+        const CacheException(),
+      ),
+    );
+  });
+
+  test('should cache NumberTrivia when cacheNumberTrivia is called', () async {
+    when(
+      () => mockSharedPreference.setString(
+        CACHED_NUMBER_TRIVIA,
+        numberTriviaModel.toJson().toString(),
+      ),
+    ).thenAnswer(
+      (_) async => true,
+    );
+
+    numberTriviaLocalDataSourceImpl.cacheNumberTrivia(numberTriviaModel);
+    verify(
+      () => mockSharedPreference.setString(
+        CACHED_NUMBER_TRIVIA,
+        numberTriviaModel.toJson().toString(),
+      ),
+    );
   });
 }
