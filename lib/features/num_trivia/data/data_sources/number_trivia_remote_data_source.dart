@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:clean_archi/core/error/exceptions.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/constants/string_constants.dart';
 import '../models/number_trivia_model.dart';
 import 'package:http/http.dart' as httpUtil;
 
@@ -14,9 +15,6 @@ abstract class NumberTriviaRemoteDataSource {
   Future<NumberTriviaModel> getRandomNumberTrivia();
 }
 
-const URL = 'http://numbersapi.com';
-const headers = {'Content-Type': 'application/json'};
-
 class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   final httpUtil.Client client;
 
@@ -25,12 +23,12 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   @override
   Future<NumberTriviaModel> getConcreteNumberTrivia(int number) =>
       _getNumberTrivia(
-        url: '$URL/$number',
+        url: '${AppString.URL}/$number',
       );
 
   @override
   Future<NumberTriviaModel> getRandomNumberTrivia() =>
-      _getNumberTrivia(url: '$URL/random');
+      _getNumberTrivia(url: '${AppString.URL}/random');
 
 
 
@@ -38,7 +36,7 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   Future<NumberTriviaModel> _getNumberTrivia({required String url}) async {
     final response = await client.get(
       Uri.parse(url),
-      headers: headers,
+      headers: AppString.headers,
     );
     if (response.statusCode == 200) {
       NumberTriviaModel numberTriviaModel = NumberTriviaModel.fromJson(
@@ -56,3 +54,5 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
     throw const ServerException();
   }
 }
+
+

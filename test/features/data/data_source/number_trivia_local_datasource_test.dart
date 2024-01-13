@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clean_archi/core/constants/string_constants.dart';
 import 'package:clean_archi/core/error/exceptions.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_local_data_source.dart';
 import 'package:clean_archi/features/num_trivia/data/models/number_trivia_model.dart';
@@ -28,20 +29,20 @@ void main() {
 
   test('should return NumberTrivia when getNumberTriviaLocalData is called',
       () async {
-    when(() => mockSharedPreference.getString(CACHED_NUMBER_TRIVIA)).thenAnswer(
+    when(() => mockSharedPreference.getString(AppString.CACHED_NUMBER_TRIVIA)).thenAnswer(
       (_) => triviaFixture,
     );
 
     final result =
         await numberTriviaLocalDataSourceImpl.getNumberTriviaLocalData;
-    verify(() => mockSharedPreference.getString(CACHED_NUMBER_TRIVIA));
+    verify(() => mockSharedPreference.getString(AppString.CACHED_NUMBER_TRIVIA));
     expect(result, equals(numberTriviaJson));
   });
 
   test(
       'should throw a CacheException when there is no cache '
       'NumberTrivia when getNumberTriviaLocalData is called', () async {
-    when(() => mockSharedPreference.getString(CACHED_NUMBER_TRIVIA))
+    when(() => mockSharedPreference.getString(AppString.CACHED_NUMBER_TRIVIA))
         .thenReturn(null);
     expect(
       () async => numberTriviaLocalDataSourceImpl.getNumberTriviaLocalData,
@@ -54,7 +55,7 @@ void main() {
   test('should cache NumberTrivia when cacheNumberTrivia is called', () async {
     when(
       () => mockSharedPreference.setString(
-        CACHED_NUMBER_TRIVIA,
+        AppString.CACHED_NUMBER_TRIVIA,
         jsonEncode(numberTriviaModel.toJson()),
       ),
     ).thenAnswer(
@@ -64,7 +65,7 @@ void main() {
     numberTriviaLocalDataSourceImpl.cacheNumberTrivia(numberTriviaModel);
     verify(
       () => mockSharedPreference.setString(
-        CACHED_NUMBER_TRIVIA,
+        AppString.CACHED_NUMBER_TRIVIA,
         jsonEncode(numberTriviaModel.toJson()),
       ),
     );

@@ -18,3 +18,8 @@ class CacheFailure extends Failure{
   List<Object?> get props => [];
 }
 
+class InvalidInputType extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+

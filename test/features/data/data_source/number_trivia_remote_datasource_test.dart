@@ -1,9 +1,8 @@
 import 'dart:convert';
-
+import 'package:clean_archi/core/constants/string_constants.dart';
 import 'package:clean_archi/core/error/exceptions.dart';
 import 'package:clean_archi/features/num_trivia/data/data_sources/number_trivia_remote_data_source.dart';
 import 'package:clean_archi/features/num_trivia/data/models/number_trivia_model.dart';
-import 'package:integration_test/common.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:http/http.dart' as http;
@@ -31,8 +30,8 @@ void main() {
   void setUpMockHttpClientSuccessConcreteTrivia() {
     when(
       () => mockClient.get(
-        Uri.parse('$URL/$number'),
-        headers: headers,
+        Uri.parse('${AppString.URL}/$number'),
+        headers: AppString.headers,
       ),
     ).thenAnswer(
       (_) async => http.Response(triviaFixture, 200),
@@ -42,8 +41,8 @@ void main() {
   // test when status code is not 200 for concrete number trivia
   void setUpMockHttpClientFailureConcreteTrivia() {
     when(() => mockClient.get(
-          Uri.parse('$URL/$number'),
-          headers: headers,
+          Uri.parse('${AppString.URL}/$number'),
+          headers: AppString.headers,
         )).thenAnswer(
       (_) async => http.Response('Something went wrong!', 404),
     );
@@ -53,8 +52,8 @@ void main() {
   void setUpMockHttpClientSuccessRandomTrivia() {
     when(
       () => mockClient.get(
-        Uri.parse('$URL/random'),
-        headers: headers,
+        Uri.parse('${AppString.URL}/random'),
+        headers: AppString.headers,
       ),
     ).thenAnswer(
       (_) async => http.Response(triviaFixture, 200),
@@ -64,8 +63,8 @@ void main() {
   // test when status code is not 200 for random number trivia
   void setUpMockHttpClientFailureRandomTrivia() {
     when(() => mockClient.get(
-          Uri.parse('$URL/random'),
-          headers: headers,
+          Uri.parse('${AppString.URL}/random'),
+          headers: AppString.headers,
         )).thenAnswer(
       (_) async => http.Response('Something went wrong!', 404),
     );
@@ -81,8 +80,8 @@ void main() {
       numberTriviaRemoteDataSourceImpl.getConcreteNumberTrivia(number);
       verify(
         () => mockClient.get(
-          Uri.parse('$URL/$number'),
-          headers: headers,
+          Uri.parse('${AppString.URL}/$number'),
+          headers: AppString.headers,
         ),
       );
     });
@@ -95,8 +94,8 @@ void main() {
           .getConcreteNumberTrivia(number);
       verify(
         () => mockClient.get(
-          Uri.parse('$URL/$number'),
-          headers: headers,
+          Uri.parse('${AppString.URL}/$number'),
+          headers: AppString.headers,
         ),
       );
       expect(result, equals(numberTriviaModel));
@@ -124,8 +123,8 @@ void main() {
           await numberTriviaRemoteDataSourceImpl.getRandomNumberTrivia();
       verify(
         () => mockClient.get(
-          Uri.parse('$URL/random'),
-          headers: headers,
+          Uri.parse('${AppString.URL}/random'),
+          headers: AppString.headers,
         ),
       );
       expect(result, equals(numberTriviaModel));
