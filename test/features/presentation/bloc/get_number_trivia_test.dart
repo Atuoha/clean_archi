@@ -55,6 +55,11 @@ void main() {
     errorMsg: ErrorMsg.SERVER_ERROR_MSG,
   );
 
+  NumberTriviaState cacheErrorState = NumberTriviaState(
+    numberTrivia: NumberTriviaModel.initial(),
+    processingState: ProcessingState.error,
+    errorMsg: ErrorMsg.CACHE_ERROR_MSG,
+  );
 
   setUp(() {
     mockGetConcreteNumberTrivia = MockGetConcreteNumberTrivia();
@@ -140,7 +145,7 @@ void main() {
     );
 
     blocTest<NumberTriviaBloc, NumberTriviaState>(
-      'should return an from concrete number usecase when the action is unsuccessful',
+      'should return an error state from concrete number usecase when the action is unsuccessful',
       build: () {
         when(() => mockInputConverter.stringToInt(numberString)).thenReturn(
           Right(number),
@@ -165,6 +170,59 @@ void main() {
       expect: () => [
         waitingState,
         serverErrorState,
+      ],
+    );
+  });
+
+// random number trivia
+  group('random number trivia', () {
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'should return a random number trivia from random number usecase when the action is successful',
+      build: () {
+        when(() => mockGetRandomNumberTrivia.call(NoParams())).thenAnswer(
+          (_) async => Right(numberTrivia),
+        );
+        return numberTriviaBloc;
+      },
+      seed: () => NumberTriviaState.initial(),
+      act: (bloc) async {
+        bloc.add(
+          GetRandomNumberTriviaEvent(),
+        );
+        await untilCalled(
+          () => mockGetRandomNumberTrivia.call(NoParams()),
+        );
+        await bloc.stream.firstWhere(
+          (state) => state.processingState == ProcessingState.success,
+        );
+      },
+      expect: () => [
+        waitingState,
+        successState,
+      ],
+    );
+
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'should return an error state from random number usecase when the action is unsuccessful',
+      build: () {
+        when(() => mockGetRandomNumberTrivia.call(NoParams())).thenAnswer(
+          (_) async => Left(ServerFailure()),
+        );
+        return numberTriviaBloc;
+      },
+      seed: () => NumberTriviaState.initial(),
+      act: (bloc) async {
+        bloc.add(
+          GetRandomNumberTriviaEvent(),
+        );
+
+        await bloc.stream.firstWhere(
+          (state) => state.processingState == ProcessingState.error,
+        );
+      },
+      expect: () => [
+        waitingState,
+        cacheErrorState,
       ],
     );
   });

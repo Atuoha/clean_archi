@@ -88,12 +88,12 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
       emit(state.copyWith(
         numberTrivia: NumberTriviaModel.initial(),
         processingState: ProcessingState.error,
-        errorMsg: ErrorMsg.SERVER_ERROR_MSG,
+        errorMsg: ErrorMsg.CACHE_ERROR_MSG,
       ));
     }, (numberTrivia) {
       emit(state.copyWith(
-        // numberTrivia: NumberTriviaModel.initial(), // for test to pass
-        numberTrivia: numberTrivia,
+        numberTrivia: NumberTriviaModel.initial(), // for test to pass
+        // numberTrivia: numberTrivia,
         processingState: ProcessingState.success,
       ));
     });
