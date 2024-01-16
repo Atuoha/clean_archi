@@ -5,6 +5,7 @@ class Assets {
   static const String blocNumberTriviaBloc = 'lib/features/num_trivia/presentation/bloc/number_trivia_bloc.dart';
   static const String blocNumberTriviaEvent = 'lib/features/num_trivia/presentation/bloc/number_trivia_event.dart';
   static const String blocNumberTriviaState = 'lib/features/num_trivia/presentation/bloc/number_trivia_state.dart';
+  static const String constantsErrorMsg = 'lib/core/constants/error_msg.dart';
   static const String constantsStringConstants = 'lib/core/constants/string_constants.dart';
   static const String dataSourcesNumberTriviaLocalDataSource = 'lib/features/num_trivia/data/data_sources/number_trivia_local_data_source.dart';
   static const String dataSourcesNumberTriviaRemoteDataSource = 'lib/features/num_trivia/data/data_sources/number_trivia_remote_data_source.dart';

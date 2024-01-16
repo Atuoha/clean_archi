@@ -3,3 +3,5 @@ class AppString {
   static const URL = 'http://numbersapi.com';
   static const headers = {'Content-Type': 'application/json'};
 }
+
+
