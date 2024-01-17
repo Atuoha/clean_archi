@@ -12,6 +12,23 @@ class NumberTriviaPage extends StatefulWidget {
 class _NumberTriviaPageState extends State<NumberTriviaPage> {
   TextEditingController searchText = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isTextEmpty = true;
+
+  @override
+  void initState() {
+    searchText.addListener(() {
+      if (searchText.text.isNotEmpty) {
+        setState(() {
+          isTextEmpty = false;
+        });
+      } else {
+        setState(() {
+          isTextEmpty = true;
+        });
+      }
+    });
+    super.initState();
+  }
 
   void search() {
     FocusScope.of(context).unfocus();
@@ -56,6 +73,7 @@ class _NumberTriviaPageState extends State<NumberTriviaPage> {
               ActionButtons(
                 search: search,
                 getRandomTrivia: getRandomTrivia,
+                isTextEmpty: isTextEmpty,
               )
             ],
           ),

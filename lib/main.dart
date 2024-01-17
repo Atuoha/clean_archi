@@ -22,10 +22,10 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter GoRouter',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
+        appBarTheme: const AppBarTheme(color: Colors.orange)
       ),
       home: const NumberTriviaPage(),
     );
