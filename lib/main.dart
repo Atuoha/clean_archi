@@ -1,9 +1,11 @@
+import 'package:clean_archi/core/utils/dependency_injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'home.dart';
 
-void main() {
+Future<void> main() async{
+  await init();
   runApp(const MyApp());
 }
 

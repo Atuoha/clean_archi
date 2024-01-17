@@ -4,7 +4,7 @@ import 'package:clean_archi/features/num_trivia/domain/use_cases/get_random_numb
 import 'package:clean_archi/features/num_trivia/presentation/bloc/number_trivia_bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +16,7 @@ import '../platform/network_info.dart';
 
 final getIt = GetIt.instance;
 
-void init() {
+Future<void> init() async {
   // Features------
   // number trivia bloc
   getIt.registerFactory(
@@ -68,7 +68,7 @@ void init() {
   );
 
   // Data Source------
-  //number trivia local data soucre
+  //number trivia local data source
   getIt.registerLazySingleton<NumberTriviaLocalDataSource>(
     () => NumberTriviaLocalDataSourceImpl(
       sharedPreferences: getIt(),
@@ -84,8 +84,8 @@ void init() {
 
   //External-----
   // http client
-  getIt.registerLazySingleton<Client>(
-    () => Client(),
+  getIt.registerLazySingleton<http.Client>(
+    () => http.Client(),
   );
 
   // connectivity
@@ -94,8 +94,9 @@ void init() {
   );
 
   // shared preferences
+  final sharedPrefs = await SharedPreferences.getInstance();
   getIt.registerLazySingleton(
-    () => SharedPreferences.getInstance(),
+    () => sharedPrefs,
   );
 
   // internet connection checker
