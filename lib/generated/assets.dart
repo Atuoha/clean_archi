@@ -14,9 +14,9 @@ class Assets {
   static const String errorExceptions = 'lib/core/error/exceptions.dart';
   static const String errorFailure = 'lib/core/error/failure.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
-  static const String libHome = 'lib/home.dart';
   static const String libMain = 'lib/main.dart';
   static const String modelsNumberTriviaModel = 'lib/features/num_trivia/data/models/number_trivia_model.dart';
+  static const String pagesNumberTriviaPage = 'lib/features/num_trivia/presentation/pages/number_trivia_page.dart';
   static const String platformNetworkInfo = 'lib/core/platform/network_info.dart';
   static const String repositoriesNumberTriviaRepository = 'lib/features/num_trivia/domain/repositories/number_trivia_repository.dart';
   static const String repositoriesNumberTriviaRepositoryImpl = 'lib/features/num_trivia/data/repositories/number_trivia_repository_impl.dart';
@@ -25,5 +25,7 @@ class Assets {
   static const String useCasesUseCases = 'lib/core/use_cases/use_cases.dart';
   static const String utilsDependencyInjection = 'lib/core/utils/dependency_injection.dart';
   static const String utilsInputConverter = 'lib/core/utils/input_converter.dart';
+  static const String widgetsActionButtons = 'lib/features/num_trivia/presentation/widgets/action_buttons.dart';
+  static const String widgetsTextInput = 'lib/features/num_trivia/presentation/widgets/text_input.dart';
 
 }
