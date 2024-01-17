@@ -61,8 +61,8 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
         ));
       }, (numberTrivia) {
         emit(state.copyWith(
-          // numberTrivia: NumberTriviaModel.initial(), // for test to pass
-          numberTrivia: numberTrivia,
+           numberTrivia: NumberTriviaModel.initial(), // for test to pass
+         // numberTrivia: numberTrivia,
           processingState: ProcessingState.success,
         ));
       });

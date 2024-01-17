@@ -206,7 +206,7 @@ void main() {
       'should return an error state from random number usecase when the action is unsuccessful',
       build: () {
         when(() => mockGetRandomNumberTrivia.call(NoParams())).thenAnswer(
-          (_) async => Left(ServerFailure()),
+          (_) async => Left(CacheFailure()),
         );
         return numberTriviaBloc;
       },
