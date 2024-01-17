@@ -23,6 +23,7 @@ class Assets {
   static const String useCasesGetConcreteNumberTrivia = 'lib/features/num_trivia/domain/use_cases/get_concrete_number_trivia.dart';
   static const String useCasesGetRandomNumberTrivia = 'lib/features/num_trivia/domain/use_cases/get_random_number_trivia.dart';
   static const String useCasesUseCases = 'lib/core/use_cases/use_cases.dart';
+  static const String utilsDependencyInjection = 'lib/core/utils/dependency_injection.dart';
   static const String utilsInputConverter = 'lib/core/utils/input_converter.dart';
 
 }
