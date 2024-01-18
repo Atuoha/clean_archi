@@ -35,7 +35,7 @@ class _NumberTriviaPageState extends State<NumberTriviaPage> {
     super.initState();
   }
 
-  void search() {
+  void searchForConcreteTrivia() {
     FocusScope.of(context).unfocus();
     var valid = _formKey.currentState!.validate();
     if (!valid) {
@@ -103,10 +103,13 @@ class _NumberTriviaPageState extends State<NumberTriviaPage> {
                     ),
                   ],
                   const SizedBox(height: 20),
-                  TextInput(searchText: searchText),
+                  TextInput(
+                    searchText: searchText,
+                    searchTriviaFnc: searchForConcreteTrivia,
+                  ),
                   const SizedBox(height: 20),
                   ActionButtons(
-                    search: search,
+                    search: searchForConcreteTrivia,
                     getRandomTrivia: getRandomTrivia,
                     isTextEmpty: isTextEmpty,
                   )

@@ -1,13 +1,14 @@
-
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {
   const TextInput({
     super.key,
     required this.searchText,
+    required this.searchTriviaFnc,
   });
 
   final TextEditingController searchText;
+  final Function searchTriviaFnc;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,9 @@ class TextInput extends StatelessWidget {
       autofocus: true,
       textInputAction: TextInputAction.search,
       keyboardType: TextInputType.number,
+      onFieldSubmitted: (value) {
+        searchTriviaFnc();
+      },
       validator: (value) {
         if (value!.isEmpty) {
           return 'Search number is can not be empty';
