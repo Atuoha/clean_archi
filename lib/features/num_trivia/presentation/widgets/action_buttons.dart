@@ -20,7 +20,7 @@ class ActionButtons extends StatelessWidget {
         ElevatedButton(
           onPressed: () => search(),
           style: ElevatedButton.styleFrom(
-            backgroundColor: isTextEmpty? Colors.orange.shade300: Colors.orange,
+            backgroundColor: isTextEmpty? Colors.purple.shade300: Colors.purple,
           ),
           child: const Text(
             'Search',

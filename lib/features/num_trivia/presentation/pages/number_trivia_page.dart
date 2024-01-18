@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/action_buttons.dart';
+import '../widgets/number_text.dart';
+import '../widgets/number_trivia_desc.dart';
 import '../widgets/text_input.dart';
 
 class NumberTriviaPage extends StatefulWidget {
@@ -54,28 +56,40 @@ class _NumberTriviaPageState extends State<NumberTriviaPage> {
       appBar: AppBar(
         title: const Text('Flutter Clean Architecture'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Start Searching',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const NumberText(number: '222'),
+                const SizedBox(height: 10),
+                const NumberTriviaDesc(
+                  numberTrivia:
+                      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,'
+                      'molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum'
+                      'numquam blanditiis harum quisquam eius sed odit fugiat iusto',
                 ),
-              ),
-              TextInput(searchText: searchText),
-              const SizedBox(height: 10),
-              ActionButtons(
-                search: search,
-                getRandomTrivia: getRandomTrivia,
-                isTextEmpty: isTextEmpty,
-              )
-            ],
+                const SizedBox(height: 20),
+                const Text(
+                  'Start Searching',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextInput(searchText: searchText),
+                const SizedBox(height: 20),
+                ActionButtons(
+                  search: search,
+                  getRandomTrivia: getRandomTrivia,
+                  isTextEmpty: isTextEmpty,
+                )
+              ],
+            ),
           ),
         ),
       ),
