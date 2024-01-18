@@ -1,7 +1,10 @@
+import 'package:clean_archi/core/constants/enums/processing_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../data/models/number_trivia_model.dart';
+import '../bloc/number_trivia_bloc.dart';
 import '../widgets/action_buttons.dart';
-import '../widgets/number_text.dart';
-import '../widgets/number_trivia_desc.dart';
+import '../widgets/number_trivia_display.dart';
 import '../widgets/text_input.dart';
 
 class NumberTriviaPage extends StatefulWidget {
@@ -35,19 +38,23 @@ class _NumberTriviaPageState extends State<NumberTriviaPage> {
   void search() {
     FocusScope.of(context).unfocus();
     var valid = _formKey.currentState!.validate();
-    if (valid) {
+    if (!valid) {
       return;
     }
-    // Todo: search fnc
+    print(searchText.text);
+
+    context.read<NumberTriviaBloc>().add(
+          GetConcreteNumberTriviaEvent(
+            numberString: searchText.text,
+          ),
+        );
   }
 
   void getRandomTrivia() {
     FocusScope.of(context).unfocus();
-    var valid = _formKey.currentState!.validate();
-    if (valid) {
-      return;
-    }
-    // Todo: random trivia fnc
+    context.read<NumberTriviaBloc>().add(
+          GetRandomNumberTriviaEvent(),
+        );
   }
 
   @override
@@ -56,42 +63,58 @@ class _NumberTriviaPageState extends State<NumberTriviaPage> {
       appBar: AppBar(
         title: const Text('Flutter Clean Architecture'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const NumberText(number: '222'),
-                const SizedBox(height: 10),
-                const NumberTriviaDesc(
-                  numberTrivia:
-                      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,'
-                      'molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum'
-                      'numquam blanditiis harum quisquam eius sed odit fugiat iusto',
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Start Searching',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextInput(searchText: searchText),
-                const SizedBox(height: 20),
-                ActionButtons(
-                  search: search,
-                  getRandomTrivia: getRandomTrivia,
-                  isTextEmpty: isTextEmpty,
-                )
-              ],
+      body: BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  if (state.processingState == ProcessingState.success) ...[
+                    NumberTriviaDisplay(
+                      numberTrivia: state.numberTrivia,
+                    ),
+                  ] else if (state.processingState ==
+                      ProcessingState.error) ...[
+                    Text(
+                      'An error occurred: ${state.errorMsg}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ] else if (state.processingState ==
+                      ProcessingState.loading) ...[
+                    const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.purple,
+                      ),
+                    )
+                  ] else ...[
+                    const Text(
+                      'Start Searching',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 20),
+                  TextInput(searchText: searchText),
+                  const SizedBox(height: 20),
+                  ActionButtons(
+                    search: search,
+                    getRandomTrivia: getRandomTrivia,
+                    isTextEmpty: isTextEmpty,
+                  )
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

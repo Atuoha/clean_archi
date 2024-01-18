@@ -1,6 +1,6 @@
 enum ProcessingState {
   initial,
-  waiting,
+  loading,
   success,
   error,
 }

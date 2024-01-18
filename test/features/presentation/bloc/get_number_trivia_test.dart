@@ -35,7 +35,7 @@ void main() {
 
   NumberTriviaState waitingState = NumberTriviaState(
     numberTrivia: NumberTriviaModel.initial(),
-    processingState: ProcessingState.waiting,
+    processingState: ProcessingState.loading,
   );
 
   NumberTriviaState successState = NumberTriviaState(

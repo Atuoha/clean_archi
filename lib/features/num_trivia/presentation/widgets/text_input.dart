@@ -17,8 +17,8 @@ class TextInput extends StatelessWidget {
       textInputAction: TextInputAction.search,
       keyboardType: TextInputType.number,
       validator: (value) {
-        if (value!.isEmpty || value.length < 3) {
-          return 'Search number is not valid';
+        if (value!.isEmpty) {
+          return 'Search number is can not be empty';
         }
         return null;
       },

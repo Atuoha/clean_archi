@@ -36,13 +36,13 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     emit(
       state.copyWith(
         numberTrivia: NumberTriviaModel.initial(),
-        processingState: ProcessingState.waiting,
+        processingState: ProcessingState.loading,
       ),
     );
 
     final inputEither = inputConverter.stringToInt(event.numberString);
 
-    inputEither.fold((failure) {
+    await inputEither.fold((failure) {
       emit(state.copyWith(
         numberTrivia: NumberTriviaModel.initial(),
         processingState: ProcessingState.error,
@@ -61,8 +61,8 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
         ));
       }, (numberTrivia) {
         emit(state.copyWith(
-           numberTrivia: NumberTriviaModel.initial(), // for test to pass
-         // numberTrivia: numberTrivia,
+          // numberTrivia: NumberTriviaModel.initial(), // for test to pass
+          numberTrivia: numberTrivia,
           processingState: ProcessingState.success,
         ));
       });
@@ -76,7 +76,7 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     emit(
       state.copyWith(
         numberTrivia: NumberTriviaModel.initial(),
-        processingState: ProcessingState.waiting,
+        processingState: ProcessingState.loading,
       ),
     );
 
@@ -92,8 +92,8 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
       ));
     }, (numberTrivia) {
       emit(state.copyWith(
-        numberTrivia: NumberTriviaModel.initial(), // for test to pass
-        // numberTrivia: numberTrivia,
+        // numberTrivia: NumberTriviaModel.initial(), // for test to pass
+        numberTrivia: numberTrivia,
         processingState: ProcessingState.success,
       ));
     });

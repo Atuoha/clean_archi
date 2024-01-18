@@ -26,8 +26,7 @@ class Assets {
   static const String utilsDependencyInjection = 'lib/core/utils/dependency_injection.dart';
   static const String utilsInputConverter = 'lib/core/utils/input_converter.dart';
   static const String widgetsActionButtons = 'lib/features/num_trivia/presentation/widgets/action_buttons.dart';
-  static const String widgetsNumberText = 'lib/features/num_trivia/presentation/widgets/number_text.dart';
-  static const String widgetsNumberTriviaDesc = 'lib/features/num_trivia/presentation/widgets/number_trivia_desc.dart';
+  static const String widgetsNumberTriviaDesc = 'number_trivia_display.dart';
   static const String widgetsTextInput = 'lib/features/num_trivia/presentation/widgets/text_input.dart';
 
 }

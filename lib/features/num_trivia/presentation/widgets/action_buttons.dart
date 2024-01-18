@@ -33,7 +33,7 @@ class ActionButtons extends StatelessWidget {
         ElevatedButton(
           onPressed: () => getRandomTrivia(),
           style: ElevatedButton.styleFrom(
-            backgroundColor: isTextEmpty? Colors.grey: Colors.grey.shade800,
+            backgroundColor: Colors.grey.shade800,
           ),
           child: const Text(
             'Get Random Trivia',
